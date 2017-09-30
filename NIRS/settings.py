@@ -26,7 +26,11 @@ SECRET_KEY = 'lp1qvh^14+8d%2lxefp12d2-wrxv5i(x+2&7*(-#n06rjyy2il'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'kurchatov1996@gmail.com'
+EMAIL_HOST_PASSWORD = '03051996z'
+EMAIL_PORT = 587
 
 # Application definition
 
@@ -109,7 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'UTC'
 
@@ -124,3 +128,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
