@@ -26,10 +26,11 @@ SECRET_KEY = 'lp1qvh^14+8d%2lxefp12d2-wrxv5i(x+2&7*(-#n06rjyy2il'
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'kurchatov1996@gmail.com'
-EMAIL_HOST_PASSWORD = '03051996z'
+EMAIL_HOST_USER = 'spelsapp@gmail.com'
+EMAIL_HOST_PASSWORD = '1spelsapp1'
 EMAIL_PORT = 587
 
 # Application definition

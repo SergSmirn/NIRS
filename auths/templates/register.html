@@ -1,20 +1,80 @@
-{% block content %}
-  <h2>Регистрация</h2>
-  <form method="post">
-    {% csrf_token %}
-      {% for field in form %}
-      <p>
-        {{ field.label_tag }}<br>
-        {{ field }}
-        {% if field.help_text %}
-          <small style="display: none">{{ field.help_text }}</small>
-        {% endif %}
-        {% for error in field.errors %}
-          <p style="color: red">{{ error }}</p>
-        {% endfor %}
-      </p>
-      {% endfor %}
+<!DOCTYPE html>
+<html>
+{% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static "../static/css/styleregister.css" %}" rel="stylesheet">
 
-    <button type="submit">Зарегистрироваться</button>
-  </form>
+  <head>
+    <title>NIRS project</title>
+  </head>
+
+  <body>
+
+  <div class="panel panel-default">
+      <div class ="panel-heading">
+          <div class="conteiner w">
+              <div class="row">
+                  <div class="col-xs-1 col-xs-offset-4">
+                      <a href="/">Home</a>
+                  </div>
+                  <div class="col-xs-2">
+                      <a href="">About project</a>
+                  </div>
+                  {%  if user.is_active %}
+                      <div class="col-xs-1 col-xs-offset-2">
+                          <a href="/auth/logout">Logout</a>
+                      </div>
+                  {% else %}
+                      <div class="col-xs-2 col-xs-offset-2">
+                            <a href="../login/">Sing in</a> or
+                            <a href="../register/">Sing up</a>
+                      </div>
+                  {% endif %}
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <div class="regblock">
+  {% block content %}
+      {%  if user.is_active %}
+        You are already login
+        {% else %}
+        <div class="container col-xs-3 col-xs-offset-4">
+            <H1>Join Project</H1>
+            <p>Best Project on modeling radioactive test</p>
+            <h3>Create your personal account</h3>
+            <form method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    {% for field in form.username %}
+                        <label for="username">Username:</label>
+                        <input class="form-control input-sm input" id="username" placeholder="Enter username"{{ field }}
+                    {% endfor %}
+                    {% for field in form.password1 %}
+                        <label for="password1">Password:</label>
+                        <input class="form-control input-sm input" id="password1" placeholder="Enter password"{{ field }}
+                    {% endfor %}
+                    {% for field in form.password2 %}
+                        <label for="password2">Success your password:</label>
+                        <input class="form-control input-sm input" id="password2" placeholder="Success your password"{{ field }}
+                    {% endfor %}
+                    {% for field in form.email %}
+                        <label for="email">Email address:</label>
+                        <input class="form-control input-sm input" id="email" placeholder="Enter email"{{ field }}
+                    {% endfor %}
+                    <button class="btn btn-success btn-lg" type="submit">Sing in on project</button>
+                </div>
+            </form>
+        </div>
+    {% endif %}
 {% endblock %}
+  </div>
+  </body>
+</html>

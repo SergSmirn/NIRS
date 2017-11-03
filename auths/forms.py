@@ -6,8 +6,8 @@ from django.utils.translation import ugettext_lazy as _
 
 User = get_user_model()
 
-DUPLICATE_EMAIL = _(u"This email address is already in use. "
-                    u"Please supply a different email address.")
+DUPLICATE_EMAIL = _(u"Данный адрес электронной почты уже используется.")
+
 
 class RegistrationForm(UserCreationForm):
     email = forms.EmailField(
@@ -27,10 +27,10 @@ class RegistrationForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         fields = [
-            User.USERNAME_FIELD,
+            'username',
+            'email',
             'password1',
             'password2',
-            'email',
         ]
 
 

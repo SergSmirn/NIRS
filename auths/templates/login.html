@@ -1,20 +1,71 @@
-{% block content %}
-  <h2>Регистрация</h2>
-  <form method="post">
-    {% csrf_token %}
-      {% for field in form %}
-      <p>
-        {{ field.label_tag }}<br>
-        {{ field }}
-        {% if field.help_text %}
-          <small style="display: none">{{ field.help_text }}</small>
-        {% endif %}
-        {% for error in field.errors %}
-          <p style="color: red">{{ error }}</p>
-        {% endfor %}
-      </p>
-      {% endfor %}
+{% load staticfiles %}
+<html>
+  <head>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link href="{% static "../static/css/style.css" %}" rel="stylesheet">
 
-    <button type="submit">Войти</button>
-  </form>
-{% endblock %}
+      <title>Welcome to the NIRS project</title>
+
+  </head>
+
+  <body>
+    {% if user.is_authenticated %}
+      Здарова, {{ user.username }}!
+        <br>
+        Че нада?
+        <br>
+      <a href="/auth/logout">Выход</a>
+
+    {% else %}
+        <div class="panel panel-default">
+            <div class ="panel-heading">
+                <div class="conteiner w">
+                    <div class="row">
+                        <div class="col-xs-1 col-xs-offset-4">
+                            <a href="">Home</a>
+                        </div>
+                        <div class="col-xs-2">
+                            <a href="">About project</a>
+                        </div>
+                        <div class="col-xs-2 col-xs-offset-2">
+                            <a href="login/">Sing in</a> or
+                            <a href="register/">Sing up</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="container">
+            <div class ="row">
+                <div class="box col-xs-4 col-lg-offset-8">
+                    <div class="login">
+                    <h1>Sing in</h1>
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <p>Username:</p>
+                                {% for field in form.username %}
+                                    {{ field.label_tag }}
+                                    <p><input class="form-control input-sm" placeholder="Enter username"{{ field }}</p>
+                                {% endfor %}
+                                <p>Password:</p>
+                                {% for field in form.password %}
+                                    {{ field.label_tag }}
+                                    <p><input class="form-control input-sm" placeholder="Enter password"{{ field }}</p>
+                                {% endfor %}
+                            <button class="btn btn-success btn-lg" type="submit">Sing in on project</button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    {% endif %}
+  </body>
+</html>

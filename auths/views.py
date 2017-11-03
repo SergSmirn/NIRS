@@ -29,8 +29,9 @@ class RegisterFormView(FormView):
         })
         subject = 'Активация аккаунта'
         to_email = form.cleaned_data.get('email')
-        send_mail(subject, message, 'kurchatov1996@gmail.com', [to_email], fail_silently=False)
+        send_mail(subject, message, 'spelsapp@gmail.com', [to_email], fail_silently=False)
         return super(RegisterFormView, self).form_valid(form)
+
 
 def activate(request, uidb64, token):
     try:
@@ -41,7 +42,6 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         user.is_active = True
         user.save()
-        login(request, user)
         # return redirect('home')
         return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
     else:
