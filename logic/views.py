@@ -25,6 +25,6 @@ class ExpFormView(FormView):
 
 def checkExp(request):
     user = request.user
-    exp = Experiment.objects.filter(user=user)
-    return render(request, "check_exp.html", {'var': exp})
+    exp = user.experiments.all()
+    return render(request, "check_exp.html", {'exp': exp})
 

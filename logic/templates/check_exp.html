@@ -7,8 +7,9 @@
 <body>
 Привет, {{ user.username }}!
 <br>
-Частота: {{ var }}
-<br>
-      <a href="/">Выход</a>
+{% for e in exp %}
+      Частота: {{ e.frequency }}, Энергия: {{ e.energy }} <br>
+    {% endfor %}
+      <a href="/">Назад</a>
 </body>
 </html>
