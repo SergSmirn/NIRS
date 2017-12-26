@@ -1,0 +1,22 @@
+body {
+  background-image: url(../img/motherboard-lights-wallpaper-8.jpeg);
+  font-family: 'Ubuntu' !important;
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.login {
+  margin-top: 22%;
+}
+.signup {
+  margin-top: 5%;
+}
+.nav-link {
+  margin-left: 30px;
+}
+.info {
+  margin-top: 4%;
+}

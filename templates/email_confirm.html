@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block title %}Email confirm{% endblock %}
+
+{% block content %}
+  <div class="alert alert-success info" role="alert">
+    <strong>Успешно!</strong> Для завершения регистрации перейдите по ссылке, отправленной вам на почту
+  </div>
+  <a href="{% url 'home' %}" class="btn btn-secondary">На главную</a>
+{% endblock %}

@@ -1,6 +1,5 @@
 from django.contrib import admin
-from .models import Experiment, Particle
+from .models import Experiment
 
 
 admin.site.register(Experiment)
-admin.site.register(Particle)

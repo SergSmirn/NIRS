@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block title %}Email confirm done{% endblock %}
+
+{% block content %}
+  <div class="alert alert-success info" role="alert">
+    <strong>Вы успешно зарегестрированы!</strong>
+  </div>
+  <a href="{% url 'home' %}" class="btn btn-success">Войти</a>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+   <div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8 col-sm-10">
+      <div class="card signup" style="border: 1px solid black">
+        <div class="card-body">
+          <h3 class="card-title">Введите данные эксперемента</h3>
+          <form method="post" novalidate>
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}">
+            {% include 'includes/form.html' %}
+              <p>Или добавьте новый</p>
+
+
+              {# 1. BUTTON TO TRIGGER THE ACTION #}
+<button type="button" class="btn btn-primary js-upload-photos">
+  <span class="glyphicon glyphicon-cloud-upload"></span> Upload file
+</button>
+
+{# 2. FILE INPUT TO BE USED BY THE PLUG-IN #}
+<input id="fileupload" type="file" name="document" style="display: none;"
+
+       data-form-data='{"csrfmiddlewaretoken": "{{ csrf_token }}"}'>
+
+
+
+            <button type="submit" class="btn btn-primary btn-block">Добавить</button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+{% endblock %}
+
+{% block javascript %}
+  {# JQUERY FILE UPLOAD SCRIPTS #}
+  <script src="{% static 'js/vendor/jquery.ui.widget.js' %}"></script>
+  <script src="{% static 'js/jquery.iframe-transport.js' %}"></script>
+  <script src="{% static 'js/jquery.fileupload.js' %}"></script>
+
+  {# PHOTOS PAGE SCRIPTS #}
+  <script src="{% static 'js/basic-upload.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,3 @@
+{% csrf_token %}
+HttpResponseRedirect
+https://docs.djangoproject.com/en/1.11/ref/models/expressions/#avoiding-race-conditions-using-f

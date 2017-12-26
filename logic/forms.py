@@ -1,11 +1,23 @@
 from django import forms
-from .models import Experiment, Particle
+from .models import Experiment, Document
 
 
-class ExpForm(forms.ModelForm):
-
-    particle = forms.ModelChoiceField(queryset=Particle.objects.all(), empty_label="Particle")
+class ExpForm1(forms.ModelForm):
 
     class Meta:
         model = Experiment
-        fields = {'particle', 'energy'}
+        fields = ('doc','param')
+
+
+class ExpForm2(forms.ModelForm):
+
+    class Meta:
+        model = Experiment
+        fields = ('param',)
+
+
+class DocumentForm(forms.ModelForm):
+
+    class Meta:
+        model = Document
+        fields = ('document',)

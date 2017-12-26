@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block title %}Email confirm done{% endblock %}
+
+{% block content %}
+  <div class="alert alert-warning info" role="alert">
+    <strong>Ссылка не действительна!</strong>
+  </div>
+  <a href="{% url 'home' %}" class="btn btn-secondary">На главную</a>
+{% endblock %}
