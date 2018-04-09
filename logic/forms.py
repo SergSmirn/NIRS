@@ -1,23 +1,11 @@
 from django import forms
-from .models import Experiment, Document
+from .models import Experiment
 
 
-class ExpForm1(forms.ModelForm):
-
-    class Meta:
-        model = Experiment
-        fields = ('doc','param')
-
-
-class ExpForm2(forms.ModelForm):
+class ExperimentForm(forms.ModelForm):
+    data = forms.FileField(label='Результаты эксперемента')
+    let = forms.FileField(label='Спектр')
 
     class Meta:
         model = Experiment
-        fields = ('param',)
-
-
-class DocumentForm(forms.ModelForm):
-
-    class Meta:
-        model = Document
-        fields = ('document',)
+        exclude = ('experimental_data', 'user', 'simulation_result', 'par1', 'par2', 'spectre')

@@ -1,24 +1,47 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.postgres.fields import ArrayField
 
 
 def user_directory_path(instance, filename):
-    # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
     return 'user_{0}/{1}'.format(instance.user.username, filename)
 
 
-class Document(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="documents")
-    description = models.CharField(max_length=255, blank=True)
-    document = models.FileField(upload_to=user_directory_path)
-    uploaded_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.document.name
-
-
 class Experiment(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="experiments")
-    doc = models.ForeignKey(Document, on_delete=models.CASCADE)
-    param = models.IntegerField(default=0)
+    # device
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    experimental_data = ArrayField(ArrayField(models.FloatField()), size=2)
+    process_node = models.IntegerField()
+    supply_voltage = models.FloatField()
+    resistance = models.FloatField(default=1.5e4)
+    capacitance = models.FloatField(default=1e-15)
+
+    # models
+    par1 = models.FloatField(null=True)
+    par2 = models.FloatField(null=True)
+    model_type = models.CharField(max_length=10,
+                                  choices=(('point', 'Точечная модель'),
+                                           ('voltage', 'Модель напряжений')))
+    sim_type = models.CharField(max_length=15,
+                                choices=(('monte_carlo', 'Монте-Карло'),
+                                         ('analytical', 'Аналитический')))
+
+    geometry = models.CharField(max_length=15,
+                                choices=(('disc', 'Диск'),
+                                         ('sphere', 'Сфера')))
+
+    spectre = ArrayField(ArrayField(models.FloatField()), null=True)
+
+    # phys
+    diff_coefficient = models.FloatField(default=12.)
+    ambipolar_diff_coefficient = models.FloatField(default=25.)
+
+    # accuracy
+    trials_count = models.IntegerField(default=20)
+    particles_count = models.IntegerField(default=50000)
+    let_values_count = models.IntegerField(default=300)
+
+    # let-cross_section
+    simulation_result = ArrayField(ArrayField(models.FloatField()), null=True)
+
 
