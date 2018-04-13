@@ -36,17 +36,18 @@ EMAIL_PORT = 587
 # Application definition
 
 INSTALLED_APPS = [
-    'auths',
-    'logic',
-
-    'widget_tweaks',
-
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'widget_tweaks',
+    'django_celery_results',
+
+    'auths',
+    'logic',
 ]
 
 MIDDLEWARE = [
@@ -98,6 +99,13 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
+# REDIS related settings
+REDIS_HOST = 'localhost'
+REDIS_PORT = '6379'
+CELERY_BROKER_URL = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
+BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
+CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
 
 
 # Password validation

@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.optimize import curve_fit, brentq
-from multiprocessing import Pool, freeze_support, cpu_count
+from multiprocessing import freeze_support, cpu_count
+from multiprocessing.pool import ThreadPool
 from functools import partial
 from .response_voltage import voltage_amplitude
 from .response_point import track_charge
@@ -140,7 +141,7 @@ def parallel_solve(response_function, tracks, chunk_size=200000):
     """
     responses = []
     for chunk in [tracks[i:i + chunk_size] for i in range(0, len(tracks), chunk_size)]:
-        pool = Pool(processes=cpu_count() - 1)
+        pool = ThreadPool(processes=cpu_count() - 1)
         r = pool.map_async(response_function, chunk, callback=responses.append)
         r.wait()
         pool.close()
@@ -194,7 +195,7 @@ def find_cross_section(exp, LET_values, parameters, vdd):
             LET_values = [LET_values]
         radius_values = []
         f = partial(find_radius, parameters=parameters, model=exp.model_type, vdd=vdd)
-        pool = Pool(processes=cpu_count() - 1)
+        pool = ThreadPool(processes=cpu_count() - 1)
         result = pool.map_async(f, LET_values, callback=radius_values.append)
         result.wait()
         pool.close()

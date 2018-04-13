@@ -6,10 +6,7 @@ from .forms import ExperimentForm
 from django.http import JsonResponse
 import numpy as np
 import pandas as pd
-from matplotlib import pyplot as plt
-from logic import logic
-from multiprocessing import freeze_support
-
+from logic.task import run_calc
 
 
 @login_required(login_url=reverse_lazy('login'))
@@ -26,30 +23,10 @@ def add_exp(request):
             exp_data = request.FILES['data']
             df = pd.read_excel(exp_data, sheet_name='Sheet1')
             exp.experimental_data = [list(df.as_matrix().T[0]), list(df.as_matrix().T[1])]
-
             let = request.FILES['let']
             exp.spectre = np.loadtxt(let, skiprows=23).tolist()
-
             exp.save()
-            freeze_support()
-            exp.par1, exp.par2 = logic.cross_section_fit(exp)
-            print('Found par1 = {0}, par2 = {1}'.format(exp.par1, exp.par2))
-            if exp.sim_type == 'monte_carlo':
-                exp.simulation_result = logic.run_monte_carlo(exp)
-            elif exp.sim_type == 'analytical':
-                exp.simulation_result = logic.run_analytical(exp)
-            print(exp.simulation_result)
-
-            fig, ax1 = plt.subplots()
-            plt.gca().set_xscale('log')
-            ax1.plot(exp.simulation_result[0], exp.simulation_result[1], 'bo')
-            plt.show()
-
-
-            # calculate SER value
-            ser = logic.calculate_ser(exp.simulation_result, np.array(exp.spectre))
-            print("SER = {0}".format(ser))
-            exp.save()
+            run_calc.delay(exp.pk)
             return redirect('home')
     else:
         form = ExperimentForm()
