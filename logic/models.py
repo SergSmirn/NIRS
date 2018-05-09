@@ -7,14 +7,33 @@ def user_directory_path(instance, filename):
     return 'user_{0}/{1}'.format(instance.user.username, filename)
 
 
-class Experiment(models.Model):
-    # device
+class Device(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
     experimental_data = ArrayField(ArrayField(models.FloatField()), size=2)
     process_node = models.IntegerField()
     supply_voltage = models.FloatField()
     resistance = models.FloatField(default=1.5e4)
     capacitance = models.FloatField(default=1e-15)
+
+    def __str__(self):
+        return '{0}; node: {1}; voltage: {2}, resistance: {3}, capacitance: {4}'.format(self.name, self.process_node, self.supply_voltage, self.resistance, self.capacitance)
+
+
+class Experiment(models.Model):
+    # device
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    device = models.ForeignKey(
+        Device,
+        default=None,
+        on_delete=models.CASCADE,
+        blank=True
+    )
+    # experimental_data = ArrayField(ArrayField(models.FloatField()), size=2)
+    # process_node = models.IntegerField()
+    # supply_voltage = models.FloatField()
+    # resistance = models.FloatField(default=1.5e4)
+    # capacitance = models.FloatField(default=1e-15)
 
     # models
     par1 = models.FloatField(null=True)

@@ -2,18 +2,44 @@
 
 {% block content %}
    <div class="row justify-content-center">
-    <div class="col-lg-6 col-md-8 col-sm-10">
-      <div class="card login" style="border: 1px solid black">
+    <div class="col-sm-12 col-md-8 mr-auto ml-auto">
+      <div class="card experiment">
         <div class="card-body">
-          <h3 class="card-title">Experiment</h3>
+          <h3 class="card-title">Данные эксперимента</h3>
           <form method="post" enctype="multipart/form-data" novalidate>
             {% csrf_token %}
             {% include 'includes/form.html' %}
-            <button type="submit" class="btn btn-primary btn-block">Добавить</button>
+            <button type="submit" class="btn btn-success btn-block">Провести эксперимент</button>
           </form>
         </div>
       </div>
-
     </div>
   </div>
+{% endblock %}
+
+{% block javascript %}
+  <script>
+    $('.count').hide();
+
+    $('.js-form-new-device').click(event => {
+      if (event.currentTarget.textContent === 'Или добавить новый девайс') {
+        event.currentTarget.textContent = 'Закрыть';
+        $(event.currentTarget).addClass('btn-danger');
+      } else {
+        event.currentTarget.textContent = 'Или добавить новый девайс';
+        $(event.currentTarget).removeClass('btn-danger');
+      }
+      $('.js-form').toggle();
+      $(document.getElementById('id_device')).toggle();
+    });
+
+    $("#id_sim_type").change(() => {
+      if ($("#id_sim_type").val() === 'monte_carlo') {
+        $('.count').show();
+        return;
+      }
+      $('.count').hide();
+    });
+
+  </script>
 {% endblock %}

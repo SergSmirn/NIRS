@@ -75,7 +75,7 @@ def run_monte_carlo(exp):
     results = []
     for k in range(exp.trials_count):
         with Timer() as t:
-            tracks = create_tracks(exp.geometry, exp.process_node * 2e-6, exp.particles_count)
+            tracks = create_tracks(exp.geometry, exp.device.process_node * 2e-6, exp.particles_count)
             # TODO implement angles
             results.append(run_trial(exp, tracks))
             print("finished trial %d" % k)
@@ -85,10 +85,10 @@ def run_monte_carlo(exp):
     mean = np.mean(raw_results, axis=1)
     std_dev = np.std(raw_results, axis=1)
     if exp.geometry == 'disk':
-        cross_section = (mean * np.pi * ((exp.process_node * 2e-6) ** 2)) / \
+        cross_section = (mean * np.pi * ((exp.device.process_node * 2e-6) ** 2)) / \
                         exp.particles_count
     else:
-        cross_section = (4 * mean * np.pi * ((exp.process_node * 2e-6) ** 2)) / \
+        cross_section = (4 * mean * np.pi * ((exp.device.process_node * 2e-6) ** 2)) / \
                         exp.particles_count
     results = np.array([np.logspace(-3, 2, exp.let_values_count), cross_section, mean, std_dev])
     return results.tolist()
@@ -116,8 +116,8 @@ def run_trial(exp, tracks):
     elif exp.model_type == 'voltage':
 
         R, L = exp.par1, exp.par2
-        capacitance = exp.capacitance
-        resistance = exp.resistance
+        capacitance = exp.device.capacitance
+        resistance = exp.device.resistance
 
         voltage = partial(voltage_amplitude, LET=1, R=R, L=L, capacitance=capacitance,
                           resistance=resistance)
@@ -125,7 +125,7 @@ def run_trial(exp, tracks):
         trial_results = []
         for LET in np.logspace(-3, 2, exp.let_values_count):
             # calculates the difference between voltage amplitude and half of supply voltage
-            all_voltages_delta = np.array(all_voltages) * LET - exp.supply_voltage / 2
+            all_voltages_delta = np.array(all_voltages) * LET - exp.device.supply_voltage / 2
             trial_results.append(len(all_voltages_delta[all_voltages_delta >= 0]))
 
     return trial_results
@@ -157,12 +157,12 @@ def cross_section_fit(exp):
     Find model parameters by performing curve fit to exerimenatal data using a chosen model
 
     """
-    node = exp.process_node / 1e3  # convert nm to um
-    x_data = exp.experimental_data[0]
-    y_data = np.sqrt(exp.experimental_data[1]) * 1e4  # convert cm2 to um
+    node = exp.device.process_node / 1e3  # convert nm to um
+    x_data = exp.device.experimental_data[0]
+    y_data = np.sqrt(exp.device.experimental_data[1]) * 1e4  # convert cm2 to um
 
     def linearized_cross_section(LET, *params):  # transform cross-section(LET) function to linearized form
-        cross_section = find_cross_section(exp, LET, params, exp.supply_voltage)
+        cross_section = find_cross_section(exp, LET, params, exp.device.supply_voltage)
         return np.sqrt(cross_section) * 1e4
 
     if exp.model_type == 'point' or exp.sim_type == "analytical":

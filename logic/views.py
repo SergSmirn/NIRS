@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.contrib.auth.models import User
-from .forms import ExperimentForm
+from .forms import ExperimentForm, DeviceForm
+from .models import Device
 from django.http import JsonResponse
 import numpy as np
 import pandas as pd
@@ -16,23 +17,72 @@ def index(request):
 
 def add_exp(request):
     if request.method == 'POST':
-        form = ExperimentForm(request.POST, request.FILES)
+        if 'name' in request.POST:
+            device_form = DeviceForm(request.POST)
+            form = ExperimentForm(request.user, request.POST, request.FILES)
+
+            if device_form.is_valid() and form.is_valid():
+                device_form.save(commit=False)
+
+                device = Device(user=request.user)
+                device.name = request.POST['name']
+                device.process_node = request.POST['process_node']
+                device.supply_voltage = request.POST['supply_voltage']
+                device.resistance = request.POST['resistance']
+                device.capacitance = request.POST['capacitance']
+                device.save()
+
+                exp = form.save(commit=False)
+                exp.device = device
+                exp.user = request.user
+                exp_data = request.FILES['data']
+                df = pd.read_excel(exp_data, sheet_name='Sheet1')
+                device.experimental_data = [list(df.as_matrix().T[0]), list(df.as_matrix().T[1])]
+                let = request.FILES['let']
+                exp.spectre = np.loadtxt(let, skiprows=23).tolist()
+
+                device.save()
+                exp.save()
+
+                run_calc.delay(exp.pk)
+
+                return redirect('home')
+
+        if 'device' in request.POST:
+            if request.POST.get('device') == '':
+                form = ExperimentForm(request.user, request.POST, request.FILES)
+                device_form = DeviceForm()
+                return render(request, 'add_file.html', {'form': form, 'device_form': device_form, 'status': 'fail'})
+
+        form = ExperimentForm(request.user, request.POST, request.FILES)
+
         if form.is_valid():
             exp = form.save(commit=False)
+            device = Device.objects.get(pk=request.POST.get('device'))
             exp.user = request.user
+            exp.device = device
             exp_data = request.FILES['data']
             df = pd.read_excel(exp_data, sheet_name='Sheet1')
-            exp.experimental_data = [list(df.as_matrix().T[0]), list(df.as_matrix().T[1])]
+            device.experimental_data = [list(df.as_matrix().T[0]), list(df.as_matrix().T[1])]
             let = request.FILES['let']
             exp.spectre = np.loadtxt(let, skiprows=23).tolist()
+            device.save()
             exp.save()
             run_calc.delay(exp.pk)
+
             return redirect('home')
+        device_form = DeviceForm(request.POST)
+        return render(request, 'add_file.html', {'form': form, 'device_form': device_form})
     else:
-        form = ExperimentForm()
-    return render(request, 'add_file.html', {'form': form})
+        form = ExperimentForm(request.user)
+        device_form = DeviceForm()
+    return render(request, 'add_file.html', {'form': form, 'device_form': device_form})
 
 
+# def get_devices(request):
+#     if request.method == 'GET' and request.is_ajax():
+#         ads
+#     return 0
 # class ExpFormView(FormView):
 #     form_class = ExpForm
 #     success_url = "/"

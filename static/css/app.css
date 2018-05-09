@@ -1,11 +1,13 @@
+@import url('https://fonts.googleapis.com/css?family=Ubuntu');
+
 body {
-  background-image: url(../img/motherboard-lights-wallpaper-8.jpeg);
-  font-family: 'Ubuntu' !important;
-  background-repeat: no-repeat;
+  background-color: floralwhite;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+  font-family: 'Ubuntu', sans-serif;
+  color: #333;
 }
 
 .login {
@@ -19,4 +21,34 @@ body {
 }
 .info {
   margin-top: 4%;
+}
+.experiment {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.device-form {
+  border: 1px solid dimgray;
+  padding: 10px 10px 10px 10px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.form-new-device {
+  margin-bottom: 15px;
+  margin-top: -10px;
+}
+
+.jumbotron {
+  background: rgba(255,255,255,0);
+}
+
+.card-link {
+  color: #555;
+}
+
+a.disabled {
+    pointer-events: none;
 }

@@ -2,7 +2,7 @@
 <html lang="ru">
   <head>
     <meta charset="utf-8">
-    <title>{% block title %}Django Boards{% endblock %}</title>
+    <title>{% block title %}Nirs app{% endblock %}</title>
     <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/app.css' %}">
@@ -10,7 +10,6 @@
   </head>
   <body>
     {% block body %}
-
       <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
         <div class="container">
           <a class="navbar-brand" href="{% url 'home' %}">
@@ -34,7 +33,7 @@
             {% if user.is_authenticated %}
               <ul class="navbar-nav ml-auto">
                 <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle text-center" href="#" id="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <a class="nav-link dropdown-toggle text-center text-capitalize" href="#" id="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {{ user.username }}
                   </a>
                   <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userMenu">
@@ -47,19 +46,20 @@
               </ul>
             {% else %}
               <form class="form-inline ml-auto">
-                <a href="{% url 'login' %}" class="btn btn-outline-secondary">Log in</a>
-                <a href="{% url 'signup' %}" class="btn btn-primary ml-2">Sign up</a>
+                <a href="{% url 'login' %}" class="btn btn-outline-secondary">Вход</a>
+                <a href="{% url 'signup' %}" class="btn btn-primary ml-2">Регистрация</a>
               </form>
             {% endif %}
           </div>
         </div>
       </nav>
-
-      <div class="container">
-        {% block content %}
-        {% endblock %}
-      </div>
     {% endblock body %}
+
+    <div class="container">
+    {% block content %}
+    {% endblock %}
+    </div>
+
     <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
     <script src="{% static 'js/popper.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>

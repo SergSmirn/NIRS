@@ -8,19 +8,54 @@
   </div>
 {% endif %}
 
+
 {% for field in form %}
-  <div class="form-group">
-    {{ field.label_tag }}
-    {% render_field field class=field|input_class %}
-    {% for error in field.errors %}
+  {% if field.label_tag == '<label for="id_trials_count">Trials count:</label>' or field.label_tag == '<label for="id_particles_count">Particles count:</label>' or field.label_tag == '<label for="id_let_values_count">Let values count:</label>' %}
+    <div class="form-group count">
+  {% else %}
+    <div class="form-group">
+  {% endif %}
+    {% if field.label_tag == '<label for="id_device">Device:</label>' and status %}
+      {{ field.label_tag }}
+      {{ field|add_class:'form-control is-invalid' }}
       <div class="invalid-feedback">
-        {{ error }}
+        Поле обязательное для заполнения
       </div>
-    {% endfor %}
+    {% else %}
+      {{ field.label_tag }}
+      {% render_field field class=field|input_class %}
+      {% for error in field.errors %}
+        <div class="invalid-feedback">
+          {{ error }}
+        </div>
+      {% endfor %}
+    {% endif %}
     {% if field.help_text %}
       <small class="form-text text-muted">
         {{ field.help_text|safe }}
       </small>
     {% endif %}
   </div>
+  {% if field.label_tag == '<label for="id_device">Device:</label>' %}
+    <button type="button" class="btn btn-primary btn-sm js-form-new-device form-new-device">Или добавить новый девайс</button>
+    <div class="js-form device-form" style="display: none">
+    <h5 class="text-center">Новый девайс</h5>
+      {% for field in device_form %}
+        <div class="form-group">
+          {{ field.label_tag }}
+          {% render_field field class=field|input_class %}
+          {% for error in field.errors %}
+            <div class="invalid-feedback">
+              {{ error }}
+            </div>
+          {% endfor %}
+          {% if field.help_text %}
+            <small class="form-text text-muted">
+              {{ field.help_text|safe }}
+            </small>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
 {% endfor %}

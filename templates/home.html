@@ -1,14 +1,30 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  Привет, {{ user.username }}!
-      <img src="https://im0-tub-ru.yandex.net/i?id=299cdbc2808c802115e2daa877470977-l&n=13"
-           alt="проблемс?" width="100" height="100" >
-      <br>
+{#  Привет, {{ user.username }}!#}
+{#      <img src="https://im0-tub-ru.yandex.net/i?id=299cdbc2808c802115e2daa877470977-l&n=13"#}
+{#           alt="проблемс?" width="100" height="100" >#}
+{#      <br>#}
 {#      <a href="{% url 'add_exp' %}">Провести эксперемент</a>#}
 {#      <br>#}
-      <a href="{% url 'add_file' %}">добавить эксперимент</a>
-      <br>
+{#      <a href="{% url 'add_file' %}">добавить эксперимент</a>#}
+{#      <br>#}
 {#      <a href="{% url 'check_exp' %}">Посмотреть результаты эксперементов</a>#}
 {#      <br>#}
+
+  <div class="row">
+    <div class="col-md-6 mt-5 mr-auto ml-auto">
+      <div class="jumbotron">
+        <h1 class="text-center display-4">Доступные опции</h1>
+        <hr class="my-4">
+        <p class="lead text-right">
+          <a class="card-link" href="{% url 'add_file' %}">Добавить эксперимент</a>
+          <br>
+          <a class="card-link disabled text-muted" href="#">Посмотреть результаты эксперементов</a>
+          <img src="https://im0-tub-ru.yandex.net/i?id=299cdbc2808c802115e2daa877470977-l&n=13"
+           alt="проблемс?" width="20" height="20" >
+        </p>
+      </div>
+    </div>
+  </div>
 {% endblock %}
