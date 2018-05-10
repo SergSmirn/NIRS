@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.contrib.auth.models import User
 from .forms import ExperimentForm, DeviceForm
-from .models import Device
+from .models import Device, Experiment
 from django.http import JsonResponse
 import numpy as np
 import pandas as pd
@@ -30,6 +30,7 @@ def add_exp(request):
                 device.supply_voltage = request.POST['supply_voltage']
                 device.resistance = request.POST['resistance']
                 device.capacitance = request.POST['capacitance']
+                device.experimental_data = None
                 device.save()
 
                 exp = form.save(commit=False)
@@ -78,6 +79,19 @@ def add_exp(request):
         device_form = DeviceForm()
     return render(request, 'add_file.html', {'form': form, 'device_form': device_form})
 
+
+def check_exp(request):
+    user = request.user
+    exp = Experiment.objects.filter(user=user)
+    return render(request, "check_exp.html", {'exp': exp})
+
+
+def check_exp_by_id(request, exp_id):
+    user = request.user
+    single_exp = Experiment.objects.filter(pk=exp_id, user=user)
+    if not single_exp:
+        return render(request, 'error.html')
+    return render(request, "check_exp.html", {'single_exp': single_exp})
 
 # def get_devices(request):
 #     if request.method == 'GET' and request.is_ajax():

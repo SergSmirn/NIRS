@@ -1,7 +1,134 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="alert-warning">
-    aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-</div>
+  {% if not exp and not single_exp %}
+  <div class="row">
+    <div class="col-md-6 mt-5 mr-auto ml-auto">
+      <div class="jumbotron">
+        <h1 class="text-center">Нет экспериментов</h1>
+        <hr class="my-4">
+        <p class="lead text-right">
+          <a class="card-link" href="{% url 'add_file' %}">Добавьте</a> если необходимо
+        </p>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  {% for content in exp|dictsort:'id' %}
+    <div class="row experiment-preview" {% if content.simulation_result %}id="{{ content.id }}" title="Посмотреть результат эксперимента №{{ forloop.counter }}" {% endif %}>
+      <div class="col-md-4 description">
+        <h5 class="description-title">Информация о устройстве</h5>
+        <span class="description-content" title="{{ content.device }}">{{ content.device }}</span>
+      </div>
+      <div class="col-md-3 description">
+        <h5 class="description-title">Тип моделирования</h5>
+        <span class="description-content text-custom">
+          {% if content.model_type == 'point' %}
+            Точечная модель
+          {% else %}
+            Модель напряжений
+          {% endif %}
+        </span>
+      </div>
+      <div class="col-md-3 description">
+        <h5 class="description-title">Тип симуляции</h5>
+        <span class="description-content text-custom">
+          {% if content.sim_type == 'monte_carlo' %}
+            Монте-Карло
+          {% else %}
+            Аналитический
+          {% endif %}
+        </span>
+      </div>
+      <div class="col-md-2 description">
+        <h5 class="description-title">Статус</h5>
+        {% if content.simulation_result %}
+          <span class="description-content text-success">Готово</span>
+        {% else %}
+          <span class="description-content text-warning" title="В процессе выполнения">Выполнение...</span>
+        {% endif %}
+      </div>
+{#      {{ content.par1 }}<br>#}
+{#      {{ content.par2 }}<br>#}
+{#      {{ content.model_type }}<br>#}
+    </div>
+  {% endfor %}
+  {% for exp in single_exp %}
+    {% if not exp.simulation_result %}
+      <div class="row">
+        <div class="col-md-7 mt-5 mr-auto ml-auto">
+          <div class="jumbotron">
+            <h1 class="text-center display-4">Результат не готов</h1>
+            <hr class="my-4">
+            <p class="lead text-right">
+              <a class="card-link" href="{% url 'home' %}">Вернуться</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    {% else %}
+    <h2 class="text-center mt-3">Результат эксперимента</h2>
+    <div class="col-md-10 mr-auto ml-auto">
+      <ul class="list-inline">
+        <li class="list-inline-item">{{ exp.model_type }}</li>
+        <li class="list-inline-item">{{ exp.sim_type }}</li>
+        <li class="list-inline-item">{{ exp.diff_coefficient }}</li>
+      </ul>
+      <div id="simulation_result_x" style="display: none;">{{ exp.simulation_result.0 }}</div>
+      <div id="simulation_result_y" style="display: none;">{{ exp.simulation_result.1 }}</div>
+{#      {{ exp.geometry }}<br>#}
+{#      {{ exp.par1 }}<br>#}
+{#      {{ exp.par2 }}<br>#}
+{#      {{ exp.spectre }}<br>#}
+    </div>
+    <div class="col-md-10 mr-auto ml-auto graph" id="myDiv" style="height:500px"></div>
+    {% endif %}
+  {% endfor %}
+{% endblock %}
+
+{% block javascript %}
+  <script>
+      $(() => {
+          const simulationResultX = document.querySelector('#simulation_result_x').textContent;
+          const simulationResultY = document.querySelector('#simulation_result_y').textContent;
+          const resultX = simulationResultX.slice(1, simulationResultX.length - 1).split(', ');
+          const resultY = simulationResultY.slice(1, simulationResultY.length - 1).split(', ');
+
+          const trace2 = {
+            x: resultX,
+            y: resultY,
+            type: 'scatter'
+          };
+
+          const layout = {
+            title: 'График',
+            xaxis: {
+              title: 'ось Х',
+              titlefont: {
+                size: 18,
+                color: '#7f7f7f'
+              }
+            },
+            yaxis: {
+              title: 'ось Y',
+              titlefont: {
+                size: 18,
+                color: '#7f7f7f'
+              }
+            }
+          };
+
+          Plotly.newPlot('myDiv', [trace2], layout);
+      });
+
+      $('.experiment-preview').click(event => {
+        const id = $(event.currentTarget).attr('id');
+
+        if (!id) {
+          return;
+        }
+
+        window.location.href = 'http://127.0.0.1:8002/check_exp/' + id;
+      })
+    </script>
 {% endblock %}

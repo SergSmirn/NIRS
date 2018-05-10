@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-8 mt-5 mr-auto ml-auto">
+    <div class="jumbotron">
+      <h1 class="text-center display-4 text-danger">404<br>Страница не найдена :(</h1>
+      <hr class="my-4">
+      <p class="lead text-center">
+        Попробуйте что-нибудь еще
+      </p>
+      <h3 class="text-right"><a class="card-link" href="{% url 'home' %}">Вернуться</a></h3>
+    </div>
+  </div>
+</div>
+{% endblock %}

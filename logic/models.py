@@ -10,7 +10,7 @@ def user_directory_path(instance, filename):
 class Device(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
-    experimental_data = ArrayField(ArrayField(models.FloatField()), size=2)
+    experimental_data = ArrayField(ArrayField(models.FloatField()), size=2, null=True)
     process_node = models.IntegerField()
     supply_voltage = models.FloatField()
     resistance = models.FloatField(default=1.5e4)
