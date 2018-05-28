@@ -141,11 +141,7 @@ def parallel_solve(response_function, tracks, chunk_size=200000):
     """
     responses = []
     for chunk in [tracks[i:i + chunk_size] for i in range(0, len(tracks), chunk_size)]:
-        cpu_count = cpu_count()
-        if cpu_count > 1:
-            cpu_count -= 1
-
-        pool = Pool(processes=cpu_count)
+        pool = Pool(processes=cpu_count())
         r = pool.map_async(response_function, chunk, callback=responses.append)
         r.wait()
         pool.close()

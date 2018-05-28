@@ -2,7 +2,8 @@
 
 {% block content %}
   {% if not exp and not single_exp %}
-  <div class="row">
+  <!--suppress ALL -->
+    <div class="row">
     <div class="col-md-6 mt-5 mr-auto ml-auto">
       <div class="jumbotron">
         <h1 class="text-center">Нет экспериментов</h1>
@@ -132,7 +133,7 @@
           return;
         }
 
-        window.location.href = 'http://127.0.0.1:8001/check_exp/' + id;
+        window.location.href = '{% url 'check_exp' %}' + id;
       })
     </script>
 {% endblock %}
