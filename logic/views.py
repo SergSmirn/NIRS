@@ -5,6 +5,8 @@ from django.contrib.auth.models import User
 from .forms import ExperimentForm, DeviceForm
 from .models import Device, Experiment
 from django.http import JsonResponse
+from django.http import HttpResponse
+import tablib
 import numpy as np
 import pandas as pd
 from logic.task import run_calc
@@ -92,6 +94,21 @@ def check_exp_by_id(request, exp_id):
     if not single_exp:
         return render(request, 'error.html')
     return render(request, "check_exp.html", {'single_exp': single_exp})
+
+
+def check_result_by_id(request, exp_id):
+    user = request.user
+    single_exp = Experiment.objects.filter(pk=exp_id, user=user)
+    if not single_exp:
+        return render(request, 'error.html')
+
+    data = []
+    data = tablib.Dataset(*data)
+    for col in single_exp[0].simulation_result:
+        data.append_col(col)
+    response = HttpResponse(data.xls, content_type='application/vnd.ms-excel;charset=utf-8')
+    response['Content-Disposition'] = "attachment; filename=export.xls"
+    return response
 
 # def get_devices(request):
 #     if request.method == 'GET' and request.is_ajax():

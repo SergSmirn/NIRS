@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^add_exp/$', logic_views.add_exp, name='add_file'),
     url(r'^check_exp/$', logic_views.check_exp, name='check_exp'),
     url(r'^check_exp/(?P<exp_id>[0-9]+)/$', logic_views.check_exp_by_id, name='check_exp_by_id'),
+    url(r'^check_result/(?P<exp_id>[0-9]+)/$', logic_views.check_result_by_id, name='check_result_by_id'),
     url(r'^signup/$', views.signup, name='signup'),
     url(r'^activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
         views.activate, name='activate'),

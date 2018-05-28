@@ -73,6 +73,8 @@
         <li class="list-inline-item">{{ exp.model_type }}</li>
         <li class="list-inline-item">{{ exp.sim_type }}</li>
         <li class="list-inline-item">{{ exp.diff_coefficient }}</li>
+        <a class="btn btn-primary" href="/check_result/{{ exp.id }}">Скачать файл</a>
+        <a class="btn btn-primary">Повторно</a>
       </ul>
       <div id="simulation_result_x" style="display: none;">{{ exp.simulation_result.0 }}</div>
       <div id="simulation_result_y" style="display: none;">{{ exp.simulation_result.1 }}</div>
@@ -88,6 +90,7 @@
 
 {% block javascript %}
   <script>
+  {% if single_exp %}
       $(() => {
           const simulationResultX = document.querySelector('#simulation_result_x').textContent;
           const simulationResultY = document.querySelector('#simulation_result_y').textContent;
@@ -101,7 +104,7 @@
           };
 
           const layout = {
-            title: 'График',
+            title: 'simulation_result',
             xaxis: {
               title: 'ось Х',
               titlefont: {
@@ -120,6 +123,7 @@
 
           Plotly.newPlot('myDiv', [trace2], layout);
       });
+  {% endif %}
 
       $('.experiment-preview').click(event => {
         const id = $(event.currentTarget).attr('id');
@@ -128,7 +132,7 @@
           return;
         }
 
-        window.location.href = 'http://127.0.0.1:8002/check_exp/' + id;
+        window.location.href = 'http://127.0.0.1:8001/check_exp/' + id;
       })
     </script>
 {% endblock %}
