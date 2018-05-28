@@ -10,7 +10,6 @@ def user_directory_path(instance, filename):
 class Device(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
-    experimental_data = ArrayField(ArrayField(models.FloatField()), size=2, null=True)
     process_node = models.IntegerField()
     supply_voltage = models.FloatField()
     resistance = models.FloatField(default=1.5e4)
@@ -29,11 +28,6 @@ class Experiment(models.Model):
         on_delete=models.CASCADE,
         blank=True
     )
-    # experimental_data = ArrayField(ArrayField(models.FloatField()), size=2)
-    # process_node = models.IntegerField()
-    # supply_voltage = models.FloatField()
-    # resistance = models.FloatField(default=1.5e4)
-    # capacitance = models.FloatField(default=1e-15)
 
     # models
     par1 = models.FloatField(null=True)
@@ -50,6 +44,7 @@ class Experiment(models.Model):
                                          ('sphere', 'Сфера')))
 
     spectre = ArrayField(ArrayField(models.FloatField()), null=True)
+    experimental_data = ArrayField(ArrayField(models.FloatField()), size=2, null=True)
 
     # phys
     diff_coefficient = models.FloatField(default=12.)
@@ -63,4 +58,4 @@ class Experiment(models.Model):
     # let-cross_section
     simulation_result = ArrayField(ArrayField(models.FloatField()), null=True)
 
-
+    ser = models.FloatField(null=True)

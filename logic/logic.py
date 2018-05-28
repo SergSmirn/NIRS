@@ -158,8 +158,8 @@ def cross_section_fit(exp):
 
     """
     node = exp.device.process_node / 1e3  # convert nm to um
-    x_data = exp.device.experimental_data[0]
-    y_data = np.sqrt(exp.device.experimental_data[1]) * 1e4  # convert cm2 to um
+    x_data = exp.experimental_data[0]
+    y_data = np.sqrt(exp.experimental_data[1]) * 1e4  # convert cm2 to um
 
     def linearized_cross_section(LET, *params):  # transform cross-section(LET) function to linearized form
         cross_section = find_cross_section(exp, LET, params, exp.device.supply_voltage)

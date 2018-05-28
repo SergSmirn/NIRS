@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^login/$', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
     url(r'^logout/$', auth_views.LogoutView.as_view(), name='logout'),
     url(r'^add_exp/$', logic_views.add_exp, name='add_file'),
+    url(r'^repeat_exp/(?P<exp_id>[0-9]+)/$', logic_views.repeat_exp, name='repeat_exp'),
     url(r'^check_exp/$', logic_views.check_exp, name='check_exp'),
     url(r'^check_exp/(?P<exp_id>[0-9]+)/$', logic_views.check_exp_by_id, name='check_exp_by_id'),
     url(r'^check_result/(?P<exp_id>[0-9]+)/$', logic_views.check_result_by_id, name='check_result_by_id'),

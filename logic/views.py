@@ -32,7 +32,6 @@ def add_exp(request):
                 device.supply_voltage = request.POST['supply_voltage']
                 device.resistance = request.POST['resistance']
                 device.capacitance = request.POST['capacitance']
-                device.experimental_data = None
                 device.save()
 
                 exp = form.save(commit=False)
@@ -40,11 +39,9 @@ def add_exp(request):
                 exp.user = request.user
                 exp_data = request.FILES['data']
                 df = pd.read_excel(exp_data, sheet_name='Sheet1')
-                device.experimental_data = [list(df.as_matrix().T[0]), list(df.as_matrix().T[1])]
+                exp.experimental_data = [list(df.as_matrix().T[0]), list(df.as_matrix().T[1])]
                 let = request.FILES['let']
                 exp.spectre = np.loadtxt(let, skiprows=23).tolist()
-
-                device.save()
                 exp.save()
 
                 run_calc.delay(exp.pk)
@@ -66,7 +63,7 @@ def add_exp(request):
             exp.device = device
             exp_data = request.FILES['data']
             df = pd.read_excel(exp_data, sheet_name='Sheet1')
-            device.experimental_data = [list(df.as_matrix().T[0]), list(df.as_matrix().T[1])]
+            exp.experimental_data = [list(df.as_matrix().T[0]), list(df.as_matrix().T[1])]
             let = request.FILES['let']
             exp.spectre = np.loadtxt(let, skiprows=23).tolist()
             device.save()
@@ -80,6 +77,15 @@ def add_exp(request):
         form = ExperimentForm(request.user)
         device_form = DeviceForm()
     return render(request, 'add_file.html', {'form': form, 'device_form': device_form})
+
+
+def repeat_exp(request, exp_id):
+    new_exp = Experiment.objects.get(pk=exp_id)
+    new_exp.pk = None
+    new_exp.simulation_result = None
+    new_exp.save()
+    run_calc.delay(new_exp.pk)
+    return redirect('check_exp')
 
 
 def check_exp(request):

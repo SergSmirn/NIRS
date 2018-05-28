@@ -72,9 +72,9 @@
       <ul class="list-inline">
         <li class="list-inline-item">{{ exp.model_type }}</li>
         <li class="list-inline-item">{{ exp.sim_type }}</li>
-        <li class="list-inline-item">{{ exp.diff_coefficient }}</li>
-        <a class="btn btn-primary" href="/check_result/{{ exp.id }}">Скачать файл</a>
-        <a class="btn btn-primary">Повторно</a>
+        <li class="list-inline-item">SER: {{ exp.ser }}</li>
+        <a class="btn btn-success" href="/check_result/{{ exp.id }}">Скачать файл</a>
+        <a class="btn btn-primary" href="/repeat_exp/{{ exp.id }}">Повторить</a>
       </ul>
       <div id="simulation_result_x" style="display: none;">{{ exp.simulation_result.0 }}</div>
       <div id="simulation_result_y" style="display: none;">{{ exp.simulation_result.1 }}</div>

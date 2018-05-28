@@ -13,11 +13,11 @@ class ExperimentForm(forms.ModelForm):
 
     class Meta:
         model = Experiment
-        exclude = ('user', 'simulation_result', 'par1', 'par2', 'spectre')
+        exclude = ('user', 'simulation_result', 'par1', 'par2', 'spectre', 'experimental_data', 'ser')
 
 
 class DeviceForm(forms.ModelForm):
 
     class Meta:
         model = Device
-        exclude = ('user', 'experimental_data')
+        exclude = ('user',)

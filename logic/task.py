@@ -27,4 +27,5 @@ def run_calc(exp_id):
     # calculate SER value
     ser = logic.calculate_ser(exp.simulation_result, np.array(exp.spectre))
     print("SER = {0}".format(ser))
+    exp.ser = ser
     exp.save()
