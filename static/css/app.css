@@ -100,3 +100,20 @@ a.disabled {
   border: 1px solid black;
   padding: 5px 10px 5px 10px;
 }
+
+.btn:not(:first-child) {
+  margin-left: 3px;
+}
+
+table thead, table tbody {
+  display: block;
+  width: 100%;
+}
+
+table tbody {
+  overflow: auto;
+  height: 400px;
+}
+th:not(:first-child), td:not(:first-child) {
+  width: calc(100% / 3);
+}

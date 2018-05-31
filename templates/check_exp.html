@@ -70,21 +70,49 @@
     {% else %}
     <h2 class="text-center mt-3">Результат эксперимента</h2>
     <div class="col-md-10 mr-auto ml-auto">
-      <ul class="list-inline">
+      <ul class="list-inline d-flex">
         <li class="list-inline-item">{{ exp.model_type }}</li>
         <li class="list-inline-item">{{ exp.sim_type }}</li>
         <li class="list-inline-item">SER: {{ exp.ser }}</li>
+        <button type="button" class="btn btn-primary ml-auto" data-toggle="modal" data-target="#letModal">посмотреть LET</button>
         <a class="btn btn-success" href="/check_result/{{ exp.id }}">Скачать файл</a>
         <a class="btn btn-primary" href="/repeat_exp/{{ exp.id }}">Повторить</a>
       </ul>
       <div id="simulation_result_x" style="display: none;">{{ exp.simulation_result.0 }}</div>
       <div id="simulation_result_y" style="display: none;">{{ exp.simulation_result.1 }}</div>
-{#      {{ exp.geometry }}<br>#}
-{#      {{ exp.par1 }}<br>#}
-{#      {{ exp.par2 }}<br>#}
-{#      {{ exp.spectre }}<br>#}
     </div>
-    <div class="col-md-10 mr-auto ml-auto graph" id="myDiv" style="height:500px"></div>
+    <div class="col-md-10 mr-auto ml-auto graph" id="myDiv" style="height:600px"></div>
+      <div class="modal fade bd-example-modal-lg" id="letModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+        <table class="table table-sm table-hover text-center table-fixed">
+          <thead>
+            <tr>
+              <th class="text-center"></th>
+              <th class="text-center" style="padding-left: 70px">LET<br>[Mev.cm2.g-1]</th>
+              <th class="text-center">INTEGRAL_FLUX<br>[cm-2.s-1]</th>
+              <th class="text-center">DIFFERENTIAL_FLUX<br>[cm-2.s-1.(Mev.cm2.g-1)-1]</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for spec in exp.spectre %}
+            <tr>
+              <th scope="row" class="text-center">{{ forloop.counter }}</th>
+            {% for spec1 in spec %}
+            <td>{{ spec1 }}</td>
+            {% endfor %}
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
     {% endif %}
   {% endfor %}
 {% endblock %}

@@ -16,7 +16,7 @@ class Device(models.Model):
     capacitance = models.FloatField(default=1e-15)
 
     def __str__(self):
-        return '{0}; node: {1}; voltage: {2}, resistance: {3}, capacitance: {4}'.format(self.name, self.process_node, self.supply_voltage, self.resistance, self.capacitance)
+        return '{0}\nnode: {1}\nvoltage: {2}\nresistance: {3}\ncapacitance: {4}'.format(self.name, self.process_node, self.supply_voltage, self.resistance, self.capacitance)
 
 
 class Experiment(models.Model):
