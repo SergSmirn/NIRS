@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css?family=Ubuntu');
+
+body {
+  background-color: floralwhite;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  font-family: 'Ubuntu', sans-serif;
+  color: #333;
+}
+
+.login {
+  margin-top: 22%;
+}
+.signup {
+  margin-top: 5%;
+}
+.nav-link {
+  margin-left: 30px;
+}
+.info {
+  margin-top: 4%;
+}
+.experiment {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+.device-form {
+  border: 1px solid dimgray;
+  padding: 10px 10px 10px 10px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.form-new-device {
+  margin-bottom: 15px;
+  margin-top: -10px;
+}
+
+.jumbotron {
+  background: rgba(255,255,255,0);
+}
+
+.card-link {
+  color: #555;
+}
+
+a.disabled {
+    pointer-events: none;
+}
+
+.experiment-preview {
+  border: 1px solid rgba(0,0,0,.2);
+  border-radius: 5px;
+  
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+  
+  cursor: pointer;
+}
+
+.experiment-preview:first-child {
+  margin-top: 40px;
+}
+
+.experiment-preview:hover {
+  background: rgba(0,0,0,.05);
+}
+
+.description {
+  display: inline-block;
+  margin-top: -5px;
+  margin-bottom: -5px;
+  
+  padding-top: 10px;
+  padding-bottom: 10px;
+  
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  
+  text-align: center;
+}
+
+.description-content {
+  cursor: pointer;
+}
+
+.text-custom {
+  color: #996300;
+  text-decoration: underline;
+}
+
+.list-inline-item {
+  border: 1px solid black;
+  padding: 5px 10px 5px 10px;
+}
+
+.btn:not(:first-child) {
+  margin-left: 3px;
+}
+
+table thead, table tbody {
+  display: block;
+  width: 100%;
+}
+
+table tbody {
+  overflow: auto;
+  height: 400px;
+}
+th:not(:first-child), td:not(:first-child) {
+  width: calc(100% / 3);
+}
